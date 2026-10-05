@@ -1,0 +1,152 @@
+@model GaragemVeiculos.Models.ReservaIndexViewModel
+@{
+    ViewData["Title"] = "Controle de Reservas";
+    var hoje = DateTime.Today;
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
+    <div>
+        <h2 class="h3 text-dark mb-0"><i class="bi bi-calendar-check me-2"></i>Controle de Reservas</h2>
+        <small class="text-muted">Gerencie agendamentos e consulte a disponibilidade da frota em tempo real</small>
+    </div>
+    <div>
+        <a asp-action="Create" class="btn btn-primary shadow-sm">
+            <i class="bi bi-plus-lg me-1"></i>Nova Reserva
+        </a>
+    </div>
+</div>
+
+<!-- Card de Status dos Veículos Hoje -->
+<div class="card border-0 shadow-sm mb-4">
+    <div class="card-header bg-white py-3 border-bottom d-flex align-items-center justify-content-between">
+        <h5 class="card-title mb-0 fs-6 fw-bold text-secondary">
+            <i class="bi bi-speedometer2 me-2"></i>Disponibilidade da Frota Hoje (@hoje.ToString("dd/MM/yyyy"))
+        </h5>
+        <span class="badge bg-secondary-subtle text-secondary small">Total: @Model.VeiculosStatus.Count veículos</span>
+    </div>
+    <div class="card-body">
+        @if (!Model.VeiculosStatus.Any())
+        {
+            <p class="text-muted small mb-0">Nenhum veículo cadastrado na frota. Cadastre veículos no menu acima.</p>
+        }
+        else
+        {
+            <div class="row g-3">
+                @foreach (var item in Model.VeiculosStatus)
+                {
+                    <div class="col-md-6 col-lg-4 col-xl-3">
+                        <div class="border rounded p-3 h-100 bg-white d-flex flex-column justify-content-between @(item.ReservadoHoje ? "border-danger-subtle bg-danger-subtle bg-opacity-10" : "border-success-subtle bg-success-subtle bg-opacity-10")">
+                            <div>
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <span class="fw-bold text-dark">@item.Veiculo.Marca @item.Veiculo.Modelo</span>
+                                    @if (item.ReservadoHoje)
+                                    {
+                                        <span class="badge bg-danger">
+                                            <i class="bi bi-lock-fill me-1"></i>Reservado
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-success">
+                                            <i class="bi bi-check-circle-fill me-1"></i>Disponível
+                                        </span>
+                                    }
+                                </div>
+                                <div class="text-muted small">
+                                    <div><i class="bi bi-upc me-1"></i>Placa: <strong>@item.Veiculo.Placa</strong></div>
+                                    <div><i class="bi bi-calendar3 me-1"></i>Ano: @item.Veiculo.Ano</div>
+                                </div>
+                            </div>
+                            @if (item.ReservadoHoje && !string.IsNullOrEmpty(item.ReservadoPara))
+                            {
+                                <div class="mt-2 pt-2 border-top border-secondary-subtle small text-danger">
+                                    <i class="bi bi-person me-1"></i>Com: <strong>@item.ReservadoPara</strong>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Tabela de Reservas -->
+<div class="card border-0 shadow-sm">
+    <div class="card-header bg-white py-3 border-bottom">
+        <h5 class="card-title mb-0 fs-6 fw-bold text-secondary">
+            <i class="bi bi-list-check me-2"></i>Histórico e Próximas Reservas
+        </h5>
+    </div>
+    <div class="card-body p-0">
+        @if (Model.Reservas == null || !Model.Reservas.Any())
+        {
+            <div class="p-4 text-center text-muted">
+                <i class="bi bi-calendar-x display-6 d-block mb-2"></i>
+                Nenhuma reserva registrada no sistema.
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-3" style="width: 70px;">#ID</th>
+                            <th>Pessoa / Responsável</th>
+                            <th>Veículo</th>
+                            <th>Período</th>
+                            <th>Status Atual</th>
+                            <th class="text-end pe-3" style="width: 180px;">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var res in Model.Reservas)
+                        {
+                            <tr>
+                                <td class="ps-3 fw-bold text-secondary">@res.Id</td>
+                                <td class="fw-semibold text-dark">
+                                    <i class="bi bi-person me-1 text-muted"></i>@res.NomePessoa
+                                </td>
+                                <td>
+                                    <div>@res.ModeloVeiculo</div>
+                                    <span class="badge bg-dark-subtle text-dark border font-monospace small">@res.PlacaVeiculo</span>
+                                </td>
+                                <td>
+                                    <span class="fw-medium">@res.DataInicio.ToString("dd/MM/yyyy")</span>
+                                    <span class="text-muted mx-1">até</span>
+                                    <span class="fw-medium">@res.DataFim.ToString("dd/MM/yyyy")</span>
+                                </td>
+                                <td>
+                                    @if (res.EstaAtivaHoje)
+                                    {
+                                        <span class="badge bg-danger">Em Andamento</span>
+                                    }
+                                    else if (res.DataInicio.Date > hoje)
+                                    {
+                                        <span class="badge bg-primary">Agendada</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge bg-secondary">Concluída</span>
+                                    }
+                                </td>
+                                <td class="text-end pe-3">
+                                    <a asp-action="Edit" asp-route-id="@res.Id" class="btn btn-sm btn-outline-secondary me-1" title="Editar Período">
+                                        <i class="bi bi-pencil"></i> Editar
+                                    </a>
+                                    <form asp-action="Delete" asp-route-id="@res.Id" method="post" class="d-inline" onsubmit="return confirm('Deseja realmente cancelar/excluir a reserva #@res.Id?');">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Cancelar Reserva">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,42 @@
+[
+  {
+    "Id": 1,
+    "Placa": "BRA2E19",
+    "Marca": "Toyota",
+    "Modelo": "Corolla XEi",
+    "Ano": 2023,
+    "Cor": "Prata"
+  },
+  {
+    "Id": 2,
+    "Placa": "RIO1A23",
+    "Marca": "Fiat",
+    "Modelo": "Strada Freedom",
+    "Ano": 2022,
+    "Cor": "Branco"
+  },
+  {
+    "Id": 3,
+    "Placa": "SPX9B88",
+    "Marca": "Volkswagen",
+    "Modelo": "T-Cross Highline",
+    "Ano": 2024,
+    "Cor": "Cinza Platinum"
+  },
+  {
+    "Id": 4,
+    "Placa": "QXEC177",
+    "Marca": "VW",
+    "Modelo": "Voyage",
+    "Ano": 2022,
+    "Cor": "Prata"
+  },
+  {
+    "Id": 5,
+    "Placa": "QXEC179",
+    "Marca": "VW",
+    "Modelo": "Gol",
+    "Ano": 2021,
+    "Cor": "Preto"
+  }
+]

@@ -1,0 +1,87 @@
+@model GaragemVeiculos.Models.Reserva
+@{
+    var isEdicao = Model.Id > 0;
+    ViewData["Title"] = isEdicao ? "Editar Reserva" : "Nova Reserva";
+    var pessoas = ViewBag.Pessoas as List<SelectListItem> ?? new List<SelectListItem>();
+    var veiculos = ViewBag.Veiculos as List<SelectListItem> ?? new List<SelectListItem>();
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-7">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white py-3 border-bottom">
+                <h4 class="card-title mb-0 text-primary">
+                    <i class="bi @(isEdicao ? "bi-calendar-check" : "bi-calendar-plus") me-2"></i>
+                    @(isEdicao ? "Editar Reserva" : "Criar Nova Reserva")
+                </h4>
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="@(isEdicao ? "Edit" : "Create")" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small mb-3"></div>
+
+                    @if (isEdicao)
+                    {
+                        <input type="hidden" asp-for="Id" />
+                    }
+
+                    <div class="mb-3">
+                        <label asp-for="PessoaId" class="form-label fw-semibold">Pessoa / Motorista <span class="text-danger">*</span></label>
+                        <select asp-for="PessoaId" class="form-select" asp-items="pessoas">
+                            <option value="">-- Selecione uma pessoa --</option>
+                        </select>
+                        <span asp-validation-for="PessoaId" class="text-danger small"></span>
+                        @if (!pessoas.Any())
+                        {
+                            <div class="form-text text-warning small">
+                                <i class="bi bi-exclamation-triangle me-1"></i>Nenhuma pessoa cadastrada. Cadastre uma pessoa antes de criar a reserva.
+                            </div>
+                        }
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="VeiculoId" class="form-label fw-semibold">Veículo <span class="text-danger">*</span></label>
+                        <select asp-for="VeiculoId" class="form-select" asp-items="veiculos">
+                            <option value="">-- Selecione um veículo --</option>
+                        </select>
+                        <span asp-validation-for="VeiculoId" class="text-danger small"></span>
+                        @if (!veiculos.Any())
+                        {
+                            <div class="form-text text-warning small">
+                                <i class="bi bi-exclamation-triangle me-1"></i>Nenhum veículo cadastrado. Cadastre um veículo antes de criar a reserva.
+                            </div>
+                        }
+                    </div>
+
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-6">
+                            <label asp-for="DataInicio" class="form-label fw-semibold">Data de Início <span class="text-danger">*</span></label>
+                            <input asp-for="DataInicio" type="date" class="form-control" />
+                            <span asp-validation-for="DataInicio" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="DataFim" class="form-label fw-semibold">Data de Término <span class="text-danger">*</span></label>
+                            <input asp-for="DataFim" type="date" class="form-control" />
+                            <span asp-validation-for="DataFim" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info py-2 small mb-4">
+                        <i class="bi bi-info-circle me-1"></i>
+                        <strong>Atenção:</strong> O sistema bloqueará automaticamente qualquer tentativa de reservar o mesmo veículo em datas coincidentes com reservas existentes.
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-1"></i>Voltar
+                        </a>
+                        <button type="submit" class="btn btn-primary px-4">
+                            <i class="bi bi-check-lg me-1"></i>Salvar Reserva
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

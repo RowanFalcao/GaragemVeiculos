@@ -1,0 +1,30 @@
+[
+  {
+    "Id": 1,
+    "Nome": "Carlos Eduardo Santos",
+    "CPF": "123.456.789-00",
+    "Email": "carlos.santos@email.com",
+    "Telefone": "(64) 99123-4567"
+  },
+  {
+    "Id": 2,
+    "Nome": "Mariana Ferreira Lima",
+    "CPF": "234.567.890-11",
+    "Email": "mariana.lima@email.com",
+    "Telefone": "(64) 98877-6655"
+  },
+  {
+    "Id": 3,
+    "Nome": "Lucas Ribeiro Alves",
+    "CPF": "345.678.901-22",
+    "Email": "lucas.alves@email.com",
+    "Telefone": "(64) 99234-8899"
+  },
+  {
+    "Id": 4,
+    "Nome": "Rowan Falc\u00E3o",
+    "CPF": "05316261135",
+    "Email": "topsecretfalcao@gmail.com",
+    "Telefone": "64993230961"
+  }
+]

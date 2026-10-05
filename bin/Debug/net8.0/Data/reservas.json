@@ -1,0 +1,16 @@
+[
+  {
+    "Id": 1,
+    "VeiculoId": 1,
+    "PessoaId": 1,
+    "DataInicio": "2026-10-04T00:00:00",
+    "DataFim": "2026-10-08T00:00:00"
+  },
+  {
+    "Id": 2,
+    "VeiculoId": 2,
+    "PessoaId": 2,
+    "DataInicio": "2026-10-10T00:00:00",
+    "DataFim": "2026-10-15T00:00:00"
+  }
+]

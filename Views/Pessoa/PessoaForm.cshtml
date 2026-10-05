@@ -1,0 +1,63 @@
+@model GaragemVeiculos.Models.Pessoa
+@{
+    var isEdicao = Model.Id > 0;
+    ViewData["Title"] = isEdicao ? "Editar Pessoa" : "Nova Pessoa";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-7 col-lg-6">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white py-3 border-bottom">
+                <h4 class="card-title mb-0 text-primary">
+                    <i class="bi @(isEdicao ? "bi-pencil-square" : "bi-person-plus-fill") me-2"></i>
+                    @(isEdicao ? "Editar Pessoa" : "Cadastrar Nova Pessoa")
+                </h4>
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="@(isEdicao ? "Edit" : "Create")" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small mb-3"></div>
+
+                    @if (isEdicao)
+                    {
+                        <input type="hidden" asp-for="Id" />
+                    }
+
+                    <div class="mb-3">
+                        <label asp-for="Nome" class="form-label fw-semibold">Nome Completo <span class="text-danger">*</span></label>
+                        <input asp-for="Nome" class="form-control" placeholder="Ex: João da Silva" />
+                        <span asp-validation-for="Nome" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="CPF" class="form-label fw-semibold">CPF <span class="text-danger">*</span></label>
+                        <input asp-for="CPF" class="form-control" placeholder="000.000.000-00" />
+                        <span asp-validation-for="CPF" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label fw-semibold">E-mail <span class="text-danger">*</span></label>
+                        <input asp-for="Email" type="email" class="form-control" placeholder="nome@exemplo.com" />
+                        <span asp-validation-for="Email" class="text-danger small"></span>
+                    </div>
+
+                    <div class="mb-4">
+                        <label asp-for="Telefone" class="form-label fw-semibold">Telefone (opcional)</label>
+                        <input asp-for="Telefone" class="form-control" placeholder="(64) 99999-9999" />
+                        <span asp-validation-for="Telefone" class="text-danger small"></span>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-1"></i>Voltar
+                        </a>
+                        <button type="submit" class="btn btn-primary px-4">
+                            <i class="bi bi-check-lg me-1"></i>Salvar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

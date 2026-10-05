@@ -1,0 +1,71 @@
+@model GaragemVeiculos.Models.Veiculo
+@{
+    var isEdicao = Model.Id > 0;
+    ViewData["Title"] = isEdicao ? "Editar Veículo" : "Novo Veículo";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-7 col-lg-6">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white py-3 border-bottom">
+                <h4 class="card-title mb-0 text-primary">
+                    <i class="bi @(isEdicao ? "bi-pencil-square" : "bi-car-front-fill") me-2"></i>
+                    @(isEdicao ? "Editar Veículo" : "Cadastrar Novo Veículo")
+                </h4>
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="@(isEdicao ? "Edit" : "Create")" method="post">
+                    @Html.AntiForgeryToken()
+
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small mb-3"></div>
+
+                    @if (isEdicao)
+                    {
+                        <input type="hidden" asp-for="Id" />
+                    }
+
+                    <div class="mb-3">
+                        <label asp-for="Placa" class="form-label fw-semibold">Placa <span class="text-danger">*</span></label>
+                        <input asp-for="Placa" class="form-control text-uppercase" placeholder="Ex: BRA2E19 ou ABC1234" maxlength="8" />
+                        <span asp-validation-for="Placa" class="text-danger small"></span>
+                    </div>
+
+                    <div class="row g-2 mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="Marca" class="form-label fw-semibold">Marca <span class="text-danger">*</span></label>
+                            <input asp-for="Marca" class="form-control" placeholder="Ex: Toyota, Fiat, VW" />
+                            <span asp-validation-for="Marca" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Modelo" class="form-label fw-semibold">Modelo <span class="text-danger">*</span></label>
+                            <input asp-for="Modelo" class="form-control" placeholder="Ex: Corolla, Strada, Gol" />
+                            <span asp-validation-for="Modelo" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="row g-2 mb-4">
+                        <div class="col-md-6">
+                            <label asp-for="Ano" class="form-label fw-semibold">Ano de Fabricação <span class="text-danger">*</span></label>
+                            <input asp-for="Ano" type="number" class="form-control" placeholder="Ex: 2023" />
+                            <span asp-validation-for="Ano" class="text-danger small"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Cor" class="form-label fw-semibold">Cor (opcional)</label>
+                            <input asp-for="Cor" class="form-control" placeholder="Ex: Prata, Branco, Preto" />
+                            <span asp-validation-for="Cor" class="text-danger small"></span>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <a asp-action="Index" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-1"></i>Voltar
+                        </a>
+                        <button type="submit" class="btn btn-primary px-4">
+                            <i class="bi bi-check-lg me-1"></i>Salvar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
